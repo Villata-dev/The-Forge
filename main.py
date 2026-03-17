@@ -1,5 +1,6 @@
 import pygame
 import sys
+from player import Player
 
 def main():
     # Pygame initialization
@@ -15,23 +16,28 @@ def main():
     clock = pygame.time.Clock()
     fps = 60
 
+    # Initialize Player
+    player = Player(screen_width // 2, screen_height // 2)
+
     running = True
     while running:
+        # Delta time in seconds
+        dt = clock.tick(fps) / 1000.0
+
         # Event handling
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-        # Update (placeholder for future logic)
+        # Update
+        player.update(dt)
 
         # Rendering
         screen.fill((0, 0, 0))  # Black background
+        player.draw(screen)
 
         # Refresh screen
         pygame.display.flip()
-
-        # Cap the frame rate
-        clock.tick(fps)
 
     pygame.quit()
     sys.exit()
