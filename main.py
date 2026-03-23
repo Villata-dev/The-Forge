@@ -1,6 +1,7 @@
 import pygame
 import sys
-from player import Player
+from states.state_manager import StateManager
+from states.menu_state import MenuState
 
 def main():
     # Pygame initialization
@@ -16,8 +17,9 @@ def main():
     clock = pygame.time.Clock()
     fps = 60
 
-    # Initialize Player
-    player = Player(screen_width // 2, screen_height // 2)
+    # Initialize State Manager
+    state_manager = StateManager()
+    state_manager.push(MenuState(state_manager))
 
     running = True
     while running:
@@ -25,16 +27,18 @@ def main():
         dt = clock.tick(fps) / 1000.0
 
         # Event handling
-        for event in pygame.event.get():
+        events = pygame.event.get()
+        for event in events:
             if event.type == pygame.QUIT:
                 running = False
 
+        state_manager.handle_events(events)
+
         # Update
-        player.update(dt)
+        state_manager.update(dt)
 
         # Rendering
-        screen.fill((0, 0, 0))  # Black background
-        player.draw(screen)
+        state_manager.draw(screen)
 
         # Refresh screen
         pygame.display.flip()
