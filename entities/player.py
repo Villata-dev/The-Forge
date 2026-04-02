@@ -73,5 +73,3 @@ class Player(pygame.sprite.Sprite):
         self.pos += self.direction * current_speed * dt
         self.rect.center = (round(self.pos.x), round(self.pos.y))
 
-    def draw(self, surface):
-        surface.blit(self.image, self.rect)
