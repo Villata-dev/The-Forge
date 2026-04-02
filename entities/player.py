@@ -1,16 +1,23 @@
 import pygame
+from entities.weapon_hitbox import WeaponHitbox
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, x, y):
+    def __init__(self, x, y, obstacle_sprites):
         super().__init__()
         self.pos = pygame.math.Vector2(x, y)
         self.direction = pygame.math.Vector2(0, 0)
+        self.facing_direction = pygame.math.Vector2(0, 1)  # Default facing down
         self.speed = 250.0
+        self.obstacle_sprites = obstacle_sprites
 
         # Placeholder image: a red rectangle
         self.image = pygame.Surface((50, 50))
         self.image.fill((255, 0, 0))
         self.rect = self.image.get_rect(center=self.pos)
+
+        # Hitbox for collisions (at the feet)
+        self.hitbox = self.rect.inflate(-10, -30)
+        self.hitbox.midbottom = self.rect.midbottom
 
         # Stamina and Dash attributes
         self.stamina_max = 100.0
@@ -25,6 +32,26 @@ class Player(pygame.sprite.Sprite):
         self.dash_timer = 0.0
         self.dash_cooldown_timer = 0.0
 
+    def attack(self, groups):
+        WeaponHitbox(self, groups)
+
+    def collision(self, direction):
+        if direction == 'horizontal':
+            for sprite in self.obstacle_sprites:
+                if sprite.hitbox.colliderect(self.hitbox):
+                    if self.direction.x > 0:  # Moving right
+                        self.hitbox.right = sprite.hitbox.left
+                    if self.direction.x < 0:  # Moving left
+                        self.hitbox.left = sprite.hitbox.right
+
+        if direction == 'vertical':
+            for sprite in self.obstacle_sprites:
+                if sprite.hitbox.colliderect(self.hitbox):
+                    if self.direction.y > 0:  # Moving down
+                        self.hitbox.bottom = sprite.hitbox.top
+                    if self.direction.y < 0:  # Moving up
+                        self.hitbox.top = sprite.hitbox.bottom
+
     def update(self, dt):
         self.direction = pygame.math.Vector2(0, 0)
         keys = pygame.key.get_pressed()
@@ -37,6 +64,9 @@ class Player(pygame.sprite.Sprite):
             self.direction.x -= 1
         if keys[pygame.K_d]:
             self.direction.x += 1
+
+        if self.direction.length() > 0:
+            self.facing_direction = self.direction.copy().normalize()
 
         # Dash input handling
         can_dash = (keys[pygame.K_SPACE] or keys[pygame.K_LSHIFT]) and not self.is_dashing and self.dash_cooldown_timer <= 0
@@ -69,7 +99,24 @@ class Player(pygame.sprite.Sprite):
             if self.stamina_actual > self.stamina_max:
                 self.stamina_actual = self.stamina_max
 
-        # Update position based on direction, speed, and delta time
-        self.pos += self.direction * current_speed * dt
-        self.rect.center = (round(self.pos.x), round(self.pos.y))
+        # Movement and collision
+        velocity = self.direction * current_speed * dt
+
+        # Horizontal movement
+        self.hitbox.x += round(velocity.x)
+        self.collision('horizontal')
+
+        # Vertical movement
+        self.hitbox.y += round(velocity.y)
+        self.collision('vertical')
+
+        # Keep within screen boundaries (assuming 800x600)
+        if self.hitbox.left < 0: self.hitbox.left = 0
+        if self.hitbox.right > 800: self.hitbox.right = 800
+        if self.hitbox.top < 0: self.hitbox.top = 0
+        if self.hitbox.bottom > 600: self.hitbox.bottom = 600
+
+        self.rect.midbottom = self.hitbox.midbottom
+        self.pos.x = self.rect.centerx
+        self.pos.y = self.rect.centery
 

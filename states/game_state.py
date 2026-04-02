@@ -11,9 +11,10 @@ class GameState(State):
 
         # Initialize camera group
         self.all_sprites = CameraGroup()
+        self.obstacle_sprites = pygame.sprite.Group()
 
         # Initialize player and add to group
-        self.player = Player(400, 300)
+        self.player = Player(400, 300, self.obstacle_sprites)
         self.all_sprites.add(self.player)
 
         # Add some obstacles for Y-Sorting testing
@@ -27,14 +28,17 @@ class GameState(State):
         ]
 
         for x, y, w, h, color in obstacles_data:
-            obstacle = Obstacle(x, y, w, h, color)
-            self.all_sprites.add(obstacle)
+            Obstacle([self.all_sprites, self.obstacle_sprites], x, y, w, h, color)
 
     def handle_events(self, events):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.manager.pop()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1: # Left click
+                    self.player.attack(self.all_sprites)
 
     def update(self, dt):
         self.all_sprites.update(dt)
