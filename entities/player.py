@@ -2,7 +2,39 @@ import pygame
 from entities.weapon_hitbox import WeaponHitbox
 
 class Player(pygame.sprite.Sprite):
+    """The main player entity.
+
+    Handles player movement, collisions, stamina management, and dashing.
+
+    Attributes:
+        pos (pygame.math.Vector2): Current position of the player.
+        direction (pygame.math.Vector2): Normalized movement direction.
+        facing_direction (pygame.math.Vector2): Direction the player is currently facing.
+        speed (float): Movement speed in pixels per second.
+        obstacle_sprites (pygame.sprite.Group): Group of sprites to check for collisions.
+        image (pygame.Surface): Visual representation of the player.
+        rect (pygame.Rect): Rectangular area of the player sprite.
+        hitbox (pygame.Rect): Collision area of the player (centered at feet).
+        stamina_max (float): Maximum stamina value.
+        stamina_actual (float): Current stamina value.
+        stamina_regen_rate (float): Stamina regeneration per second.
+        dash_cost (float): Stamina cost for dashing.
+        dash_speed_multiplier (float): Speed boost factor during a dash.
+        dash_duration (float): Duration of the dash in seconds.
+        dash_cooldown (float): Cooldown between dashes in seconds.
+        is_dashing (bool): Whether the player is currently dashing.
+        dash_timer (float): Remaining time for the current dash.
+        dash_cooldown_timer (float): Remaining time for the dash cooldown.
+    """
+
     def __init__(self, x, y, obstacle_sprites):
+        """Initializes the player at a specific position.
+
+        Args:
+            x (int): The initial x-coordinate.
+            y (int): The initial y-coordinate.
+            obstacle_sprites (pygame.sprite.Group): Sprites to check for collisions against.
+        """
         super().__init__()
         self.pos = pygame.math.Vector2(x, y)
         self.direction = pygame.math.Vector2(0, 0)
@@ -33,9 +65,19 @@ class Player(pygame.sprite.Sprite):
         self.dash_cooldown_timer = 0.0
 
     def attack(self, groups):
+        """Creates a weapon hitbox in front of the player.
+
+        Args:
+            groups (list[pygame.sprite.Group]): Sprite groups to add the hitbox to.
+        """
         WeaponHitbox(self, groups)
 
     def collision(self, direction):
+        """Handles collision detection and resolution with obstacles.
+
+        Args:
+            direction (str): The axis of movement being checked ('horizontal' or 'vertical').
+        """
         if direction == 'horizontal':
             for sprite in self.obstacle_sprites:
                 if sprite.hitbox.colliderect(self.hitbox):
@@ -53,6 +95,11 @@ class Player(pygame.sprite.Sprite):
                         self.hitbox.top = sprite.hitbox.bottom
 
     def update(self, dt):
+        """Updates player input, movement, stamina, and dash timers.
+
+        Args:
+            dt (float): The time passed since the last frame in seconds.
+        """
         self.direction = pygame.math.Vector2(0, 0)
         keys = pygame.key.get_pressed()
 
@@ -119,4 +166,3 @@ class Player(pygame.sprite.Sprite):
         self.rect.midbottom = self.hitbox.midbottom
         self.pos.x = self.rect.centerx
         self.pos.y = self.rect.centery
-
