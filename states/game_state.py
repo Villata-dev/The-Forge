@@ -36,18 +36,34 @@ class GameState(State):
         # Load Map
         self.map = TiledMap("assets/maps/test_map.tmx")
 
+        # Find Player_Start in Object Layers
+        player_x, player_y = 400, 300  # Default fallback
+        for layer in self.map.tmx_data.visible_layers:
+            if isinstance(layer, pytmx.TiledObjectGroup):
+                for obj in layer:
+                    if obj.name == "Player_Start":
+                        player_x, player_y = obj.x, obj.y
+                        break
+
         # Initialize player and add to group
-        self.player = Player(400, 300, self.obstacle_sprites)
+        self.player = Player(player_x, player_y, self.obstacle_sprites)
         self.all_sprites.add(self.player)
 
-        # Process Map Layers for Y-Sort (Objetos)
+        # Process Map Layers
         for layer in self.map.tmx_data.visible_layers:
+            # Tile layers that need Y-Sort (Objetos)
             if isinstance(layer, pytmx.TiledTileLayer) and "Objetos" in layer.name:
                 for x, y, gid in layer:
                     tile_image = self.map.tmx_data.get_tile_image_by_gid(gid)
                     if tile_image:
                         pos = (x * self.map.tmx_data.tilewidth, y * self.map.tmx_data.tileheight)
                         Tile(pos, tile_image, [self.all_sprites])
+
+            # Object layers for collisions
+            elif isinstance(layer, pytmx.TiledObjectGroup) and layer.name == "Collisions":
+                for obj in layer:
+                    # Creating invisible Obstacles for collision detection
+                    Obstacle([], obj.x, obj.y, obj.width, obj.height).add(self.obstacle_sprites)
 
     def handle_events(self, events):
         """Handles gameplay events such as movement and combat.
