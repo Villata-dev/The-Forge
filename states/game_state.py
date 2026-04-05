@@ -1,8 +1,11 @@
 import pygame
+import pytmx
 from states.state import State
 from entities.player import Player
 from entities.camera_group import CameraGroup
 from entities.obstacle import Obstacle
+from engine.map_loader import TiledMap
+from entities.tile import Tile
 
 class GameState(State):
     """Represents the main gameplay state.
@@ -30,22 +33,21 @@ class GameState(State):
         self.all_sprites = CameraGroup()
         self.obstacle_sprites = pygame.sprite.Group()
 
+        # Load Map
+        self.map = TiledMap("assets/maps/test_map.tmx")
+
         # Initialize player and add to group
         self.player = Player(400, 300, self.obstacle_sprites)
         self.all_sprites.add(self.player)
 
-        # Add some obstacles for Y-Sorting testing
-        # Some are placed relative to the player's initial position
-        obstacles_data = [
-            (300, 200, 60, 100, (0, 0, 200)),  # Top-left from player
-            (500, 350, 80, 60, (0, 50, 150)),  # Bottom-right from player
-            (400, 150, 50, 50, (20, 20, 100)), # Directly above player's initial pos
-            (200, 500, 100, 100, (0, 0, 180)), # Bottom-left
-            (600, 100, 40, 40, (10, 10, 80))   # Top-right
-        ]
-
-        for x, y, w, h, color in obstacles_data:
-            Obstacle([self.all_sprites, self.obstacle_sprites], x, y, w, h, color)
+        # Process Map Layers for Y-Sort (Objetos)
+        for layer in self.map.tmx_data.visible_layers:
+            if isinstance(layer, pytmx.TiledTileLayer) and "Objetos" in layer.name:
+                for x, y, gid in layer:
+                    tile_image = self.map.tmx_data.get_tile_image_by_gid(gid)
+                    if tile_image:
+                        pos = (x * self.map.tmx_data.tilewidth, y * self.map.tmx_data.tileheight)
+                        Tile(pos, tile_image, [self.all_sprites])
 
     def handle_events(self, events):
         """Handles gameplay events such as movement and combat.
@@ -78,8 +80,18 @@ class GameState(State):
         """
         surface.fill(self.bg_color)
 
-        # Draw all sprites with camera offset and Y-sorting
+        # Update map offset
+        offset = self.all_sprites.get_offset(surface, self.player)
+        self.map.offset = offset
+
+        # Draw Background Layers (e.g., Suelo)
+        self.map.render(surface, layer_type="Suelo")
+
+        # Draw all sprites with camera offset and Y-sorting (Player, Obstacles, Objetos)
         self.all_sprites.draw(surface, self.player)
+
+        # Draw Foreground Layers
+        self.map.render(surface, layer_type="Foreground")
 
         # Stamina UI (Keep it fixed on screen)
         ui_x, ui_y = 20, 20
