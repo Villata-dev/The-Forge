@@ -11,6 +11,19 @@ class CameraGroup(pygame.sprite.Group):
         """Initializes the CameraGroup."""
         super().__init__()
 
+    def get_offset(self, surface, target_sprite):
+        """Calculates the camera offset to center the target sprite on the surface.
+
+        Args:
+            surface (pygame.Surface): The surface where the game is being drawn.
+            target_sprite (pygame.sprite.Sprite): The sprite to center the camera on.
+
+        Returns:
+            pygame.math.Vector2: The calculated camera offset.
+        """
+        screen_center = pygame.math.Vector2(surface.get_width() // 2, surface.get_height() // 2)
+        return screen_center - pygame.math.Vector2(target_sprite.rect.center)
+
     def draw(self, surface, target_sprite):
         """Renders all sprites in the group with a camera offset and Y-sorting.
 
@@ -18,10 +31,8 @@ class CameraGroup(pygame.sprite.Group):
             surface (pygame.Surface): The surface to draw the sprites on.
             target_sprite (pygame.sprite.Sprite): The sprite to center the camera on.
         """
-        # Calculate offset: screen_center - target_position
-        # This keeps the target_sprite in the middle of the screen
-        screen_center = pygame.math.Vector2(surface.get_width() // 2, surface.get_height() // 2)
-        offset = screen_center - pygame.math.Vector2(target_sprite.rect.center)
+        # Calculate offset using the helper method
+        offset = self.get_offset(surface, target_sprite)
 
         # Sort sprites by their Y-coordinate (centery) for Y-Sort (pseudo-depth)
         # We use a custom sort to ensure sprites with higher Y are drawn later (on top)
