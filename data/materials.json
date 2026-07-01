@@ -1,0 +1,10 @@
+{
+    "ingots": {
+        "Iron Ingot": {"value": 10, "weight": 1.0},
+        "Steel Ingot": {"value": 20, "weight": 1.0},
+        "Corundum Ingot": {"value": 40, "weight": 1.0},
+        "Malachite Ingot": {"value": 100, "weight": 1.0},
+        "Ebony Ingot": {"value": 150, "weight": 1.0},
+        "Dragonbone": {"value": 250, "weight": 15.0}
+    }
+}
