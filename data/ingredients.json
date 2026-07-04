@@ -1,0 +1,17 @@
+{
+    "Blue_Mountain_Flower": {
+        "effects": ["Restore Health", "Fortify Conjuration", "Damage Magicka Regen", "Fortify Health"],
+        "weight": 0.1,
+        "value": 2
+    },
+    "Nirnroot": {
+        "effects": ["Damage Health", "Damage Stamina", "Invisibility", "Resist Magic"],
+        "weight": 0.2,
+        "value": 10
+    },
+    "Vampire_Dust": {
+        "effects": ["Invisibility", "Restore Magicka", "Regenerate Health", "Cure Disease"],
+        "weight": 0.2,
+        "value": 25
+    }
+}
