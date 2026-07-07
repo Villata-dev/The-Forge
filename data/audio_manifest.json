@@ -1,0 +1,4 @@
+{
+    "footsteps": ["dirt_01.ogg", "stone_01.ogg", "wood_01.ogg"],
+    "ambient": ["wind_howl.ogg", "cave_drip.ogg"]
+}
