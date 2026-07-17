@@ -1,50 +1,31 @@
 import pygame
 import sys
-from states.state_manager import StateManager
-from states.menu_state import MenuState
+from core.settings import WINDOW_WIDTH, WINDOW_HEIGHT, FPS
+from states.game_state import GameState
 
-def main():
-    # Pygame initialization
-    pygame.init()
+class Game:
+    def __init__(self):
+        pygame.init()
+        self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+        pygame.display.set_caption("The Forge - Dev Build")
+        self.clock = pygame.time.Clock()
+        self.game_state = GameState()
 
-    # Screen configuration
-    screen_width = 800
-    screen_height = 600
-    screen = pygame.display.set_mode((screen_width, screen_height))
-    pygame.display.set_caption("The Forge")
+    def run(self):
+        while True:
+            # Delta time para independizar el movimiento de los FPS
+            dt = self.clock.tick(FPS) / 1000.0 
+            
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
 
-    # Clock configuration
-    clock = pygame.time.Clock()
-    fps = 60
+            # Bucle principal
+            self.game_state.update(dt)
+            self.game_state.draw(self.screen)
+            pygame.display.update()
 
-    # Initialize State Manager
-    state_manager = StateManager()
-    state_manager.push(MenuState(state_manager))
-
-    running = True
-    while running:
-        # Delta time in seconds
-        dt = clock.tick(fps) / 1000.0
-
-        # Event handling
-        events = pygame.event.get()
-        for event in events:
-            if event.type == pygame.QUIT:
-                running = False
-
-        state_manager.handle_events(events)
-
-        # Update
-        state_manager.update(dt)
-
-        # Rendering
-        state_manager.draw(screen)
-
-        # Refresh screen
-        pygame.display.flip()
-
-    pygame.quit()
-    sys.exit()
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    game = Game()
+    game.run()
