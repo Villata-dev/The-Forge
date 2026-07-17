@@ -13,7 +13,8 @@ class CombatSystem:
         
         final_damage = max(base_damage * (1.0 - damage_reduction), 1.0)
         
+        # Usamos round() para evitar truncamiento por errores de coma flotante
         return {
-            "damage": int(final_damage),
+            "damage": int(round(final_damage)),
             "is_critical": is_crit
         }
