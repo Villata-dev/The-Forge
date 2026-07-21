@@ -1,10 +1,1 @@
-{
-    "q_smith_tutorial": {
-        "title": "La Primera Forja",
-        "description": "Forja una daga de hierro para demostrar tu valia.",
-        "objectives": {
-            "craft_iron_dagger": {"current": 0, "required": 1}
-        },
-        "rewards": {"gold": 50, "xp": 100}
-    }
-}
+{ "Blacksmith_Errand": { "type": "FETCH", "target": "Iron_Ore", "amount": 5, "reward": 100 } }
