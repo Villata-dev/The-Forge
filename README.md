@@ -1,2 +1,2 @@
 # The Forge: Open World RPG Engine
-Motor 2D en Pygame. Cuenta con Y-Sort Camera para profundidad geométrica, partición AABB de colisiones y soporte completo para mapas TMX (Tiled) vía la librería pytmx. Incluye un sistema de interacción por proximidad para NPCs.
+Motor 2D en Pygame. Cuenta con Y-Sort Camera, colisiones AABB, soporte para mapas TMX (Tiled), Arquitectura de Eventos (EventBus), Internacionalización (i18n), soporte de Gamepads nativos y serialización segura (Base64) de partidas.
