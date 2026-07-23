@@ -1,0 +1,4 @@
+{
+    "Basic_Chest": {"Gold_Coins": 100, "Iron_Sword": 25.5, "Health_Potion": 50.0},
+    "Boss_Chest": {"Gold_Coins": 100, "Diamond": 15.0, "Legendary_Axe": 5.0}
+}
