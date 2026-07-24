@@ -1,0 +1,1 @@
+{ "Bandits": {"hostile_to": ["Guards", "Player"]}, "Guards": {"hostile_to": ["Bandits"]} }
