@@ -1,10 +1,3 @@
-import PyInstaller.main
-
-PyInstaller.main.run([
-'main.py',
-'--onefile',
-'--windowed',
-'--name=TheForge',
-'--add-data=assets:assets',
-'--noconfirm',
-])
+# PyInstaller Build Script
+import subprocess
+subprocess.run(["pyinstaller", "--onefile", "--noconsole", "main.py"])
