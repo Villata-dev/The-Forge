@@ -1,2 +1,2 @@
-class Crossfader:
-    def transition_to_combat(self): pass
+class AdaptiveScore:
+    def crossfade_tension(self): pass
