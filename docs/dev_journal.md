@@ -1,1 +1,2 @@
 - Iteracion de optimizacion 2026-08-16-1
+- Iteracion de optimizacion 2026-08-16-2
