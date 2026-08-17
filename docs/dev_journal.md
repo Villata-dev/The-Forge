@@ -11,3 +11,4 @@
 - Iteracion de optimizacion 2026-08-16-11
 - Iteracion de optimizacion 2026-08-16-12
 - Iteracion de optimizacion 2026-08-16-13
+- Iteracion de optimizacion 2026-08-17-1
