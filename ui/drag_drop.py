@@ -1,3 +1,3 @@
-class DragAndDrop:
-    def __init__(self): self.dragging = None
-    def update(self, mouse_pos): pass
+class MouseInteraction:
+    def check_grab(self, mouse_pos, inventory_slots): pass
+    def handle_drop(self, mouse_pos): pass
