@@ -1,0 +1,5 @@
+{ 
+  "Tornado_Of_Souls": {"type": "Aura", "dmg": 150, "cost": 50},
+  "Schism": {"type": "Crowd_Control", "split_damage": true},
+  "Pull_Me_Under": {"type": "Trap", "duration": 5.0}
+}
