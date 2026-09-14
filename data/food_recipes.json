@@ -1,0 +1,4 @@
+{
+  "Estus_Soup": {"ingredients": ["Bone", "Water", "Fire_Herb"], "regen_amount": 150},
+  "Roasted_Meat": {"ingredients": ["Raw_Meat"], "regen_amount": 50}
+}
