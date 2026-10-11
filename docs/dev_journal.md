@@ -2520,3 +2520,4 @@
 - Optimizacion de Mod API 2026-10-10-18
 - Optimizacion de Mod API 2026-10-10-19
 - Ajustes de balance 2026-10-11-1
+- Ajustes de balance 2026-10-11-2
