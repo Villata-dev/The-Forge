@@ -2552,3 +2552,4 @@
 - Ajustes de balance 2026-10-12-17
 - Ajustes de balance 2026-10-12-18
 - Ajustes de balance 2026-10-13-1
+- Ajustes de balance 2026-10-13-2
