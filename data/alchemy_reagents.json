@@ -1,0 +1,4 @@
+{
+  "Bloodroot": {"effect": "health_regen", "potency": 1.5},
+  "Grave_Dust": {"effect": "invisibility", "duration_penalty": 0.5}
+}
